@@ -1,19 +1,28 @@
+// src/components/Login.js
 import React, { useState } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Login submitted', { username, password });
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log('Login successful', userCredential);
+      })
+      .catch((error) => {
+        console.error('Login error', error);
+      });
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>Username:</label>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <label>Email:</label>
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
       </div>
       <div>
         <label>Password:</label>
